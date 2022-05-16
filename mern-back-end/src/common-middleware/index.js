@@ -7,8 +7,6 @@ exports.requireSignIn = (req, res, next) => {
     const user = jwt.verify(token, process.env.JWT_SECRET); //here user is _id which we have passed.
     // console.log(user);
     req.user = user;
-
-    
   }else{
     return res.status(400).json({message: 'Authorization Required'});
   }
@@ -16,8 +14,10 @@ exports.requireSignIn = (req, res, next) => {
 };
 
 exports.userMiddleware = (req, res, next) => {
-
-
+  if (req.user.role !== "user") {
+    return res.json({ message: "Access denied" });
+  }
+  next();
 };
 
 exports.adminMiddleware = (req, res, next) => {
