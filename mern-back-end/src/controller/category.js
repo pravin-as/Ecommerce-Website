@@ -1,7 +1,5 @@
-const Category = require('../models/category');
-const slugify = require('slugify');
-
-
+const slugify=require('slugify');
+const Category=require('../models/category');
 
 function createCategories(categories, parentId = null){
     const categoryList = [];
@@ -13,7 +11,7 @@ function createCategories(categories, parentId = null){
     }
 
     for(let cate of category){
-        categoryList.push({ 
+        categoryList.push({
             _id: cate._id,
             name: cate._name,
             slug: cate.slug,
@@ -24,42 +22,37 @@ function createCategories(categories, parentId = null){
     return categoryList;
 };
 
-exports.addCategory = (req, res) => {
+exports.addCategory=(req,res)=>{
 
-    // console.log(1);
 
-    const categoryObj = {
-        name: req.body.name,
-        slug: slugify(req.body.name)
+    const categoryObj={
+        name:req.body.name,
+        slug:slugify(req.body.name)
     }
 
-    if(req.body.parentId){
-        categoryObj.parentId = req.body.parentId;
+    if (req.file){
+        categoryObj.categoryImage='http://localhost:2000/public/'+req.file.filename;
     }
 
-    const cat = new Category(categoryObj);
-    cat.save( (error, category) => {
-        if(error)return res.status(400).json({error});
-        if(category){
+    if (req.body.parentId){
+        categoryObj.parentId=req.body.parentId;
+    }
+    const cat=new Category(categoryObj);
+    cat.save((error,category)=>{
+        if (error) return res.status(400).json({message:error+"Hi"});
+        if (category) {
             return res.status(201).json({category});
         }
-    
     });
-
 }
 
-exports.getCategories = (req, res) => {
+exports.getCategories=(req,res)=>{
     Category.find({})
-    .exec((error, categories) => {
-
-        if(error)return res.status(400).json({error});
-
-        if(categories){
-
-            const categoryList = createCategories(categories);
-
-            res.status(200).json({ categoryList });
+    .exec((error,categories)=>{
+        if (error) return res.status(400).json({error});
+        if (categories) {
+            const categoryList=createCategories(categories);
+            return res.status(201).json({ categoryList });
         }
-
-    });
+    })
 }
