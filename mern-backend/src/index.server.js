@@ -11,13 +11,23 @@ const categoryRoutes=require('./routes/category');
 const productRoutes=require('./routes/product');
 const cartRoutes=require('./routes/cart');
 const initialDataRoutes=require('./routes/admin/initialData');
+const pageRoutes=require('./routes/admin/page');
+const addressRoutes=require('./routes/address');
+const orderRoutes=require('./routes/order');
+const adminOrderRoutes=require('./routes/admin/order.routes');
 
 env.config();
 
 
+// console.log(env.user.MONGO_DB_USER)
+// console.log(env.process.MONGO_DB_PASSWORD)
+// console.log(env.process.MONGO_DB_DATABASE)
+
+
+// "mongodb+srv://admin1:szs4bY7vHG2xdrNW@cluster0.0az04.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+
 mongoose.connect(
     "mongodb+srv://admin1:szs4bY7vHG2xdrNW@cluster0.0az04.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-   
     {
         useNewUrlParser:true,
         useUnifiedTopology: true,
@@ -37,6 +47,10 @@ app.use('/api',categoryRoutes);
 app.use('/api',productRoutes);
 app.use('/api',cartRoutes);
 app.use('/api',initialDataRoutes);
+app.use('/api',pageRoutes);
+app.use('/api',addressRoutes);
+app.use('/api',orderRoutes);
+app.use('/api',adminOrderRoutes);
 
 app.listen(process.env.PORT,()=>{
     console.log(`Server is running on ${process.env.PORT}`);
